@@ -3,7 +3,6 @@
 Sistema de gestão de contas a receber.
 
 O Gefina registra os clientes de uma organização e as faturas emitidas contra esses clientes, e apresenta a visão consolidada da situação financeira que desses registros decorre.
-
 ## Funcionalidades
 
 - Cadastro e manutenção de clientes
