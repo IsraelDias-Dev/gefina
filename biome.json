@@ -5,7 +5,7 @@
         "indentWidth": 2,
         "lineWidth": 70
     },
-    "javascript":{
+    "javascript": {
         "formatter": {
             "quoteStyle": "single",
             "semicolons": "always"
