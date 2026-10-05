@@ -10,6 +10,7 @@
         "jsx": "react-jsx",
         "strict": true,
         "erasableSyntaxOnly": true,
+        "verbatimModuleSyntax": true,
         "allowImportingTsExtensions": true,
         "noEmit": true
     },
