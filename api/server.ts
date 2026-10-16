@@ -17,12 +17,18 @@ app.use((request, _response, next) => {
 
 app.get('/api.health', async (_request, response) => {
 const connect = await pool.query('SELECT datname FROM pg_database WHERE oid = 5;');
-
-
-  response.status(200).json({
+ try{ response.status(200).json({
      status: 'Server is running.',
     database: connect.rows[0].datname
   });
+} catch (error) {
+  console.error(error);
+
+  response.status(500).json({
+    status: 'Server is running.',
+    database: 'unvaliable'
+  });
+}
 });
 
 app.use('/api/invoices', invoices);
