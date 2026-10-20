@@ -4,6 +4,8 @@ import path from 'node:path';
 
 import pool from './database.ts';
 
+import dashboard from './dashboard.route.ts';
+
 import invoices from './invoice.route.ts';
 
 const app = express();
@@ -31,6 +33,7 @@ const connect = await pool.query('SELECT datname FROM pg_database WHERE oid = 5;
 }
 });
 
+app.use('/api/dashboard',dashboard);
 app.use('/api/invoices', invoices);
 
 app.use(express.static(dist));
