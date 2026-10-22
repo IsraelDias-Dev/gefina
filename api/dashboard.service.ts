@@ -3,8 +3,8 @@ import pool from './database.ts';
 import  { 
     type Invoice,
      type InvoiceStatus,
-    findRecentInvoices,
-    findOverdueIinvoices }
+    findRecentInvoice,
+    findOverdueInvoices }
       from './invoice.service.ts';
 
 async function sumAmountByStatus(status: InvoiceStatus): Promise<number> {
@@ -41,8 +41,8 @@ export default async function findDashboard(): Promise<Dashboard> {
    const pending = await sumAmountByStatus('pending');
    const invoiceCount = await count ('invoices');
    const customerCount = await count ('customers');
-   const recentInvoices = await findRecentInvoices();
-   const overdueInvoices = await findOverdueIinvoices();
+   const recentInvoices = await findRecentInvoice();
+   const overdueInvoices = await findOverdueInvoices();
 
    return{
     totals:{

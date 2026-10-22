@@ -10,14 +10,14 @@ interface InvoiceSummaryTableProps {
 }
 
 export default function InvoiceSummaryTable(Props: InvoiceSummaryTableProps) {
-    return <div>
+    return <div className="panel">
          <h2>{Props.title}</h2>
         <table>
             <thead>
                 <tr>
                     <th>CLiente</th>
                     <th>valor</th>
-                    <th>{Props.dateLabel}</th>
+                    <th className="numeric-date">{Props.dateLabel}</th>
                 </tr>
             </thead>
             <tbody>
@@ -25,7 +25,7 @@ export default function InvoiceSummaryTable(Props: InvoiceSummaryTableProps) {
                  return <tr key = {invoice.id}>
                         <td>{invoice.customer.name}</td>
                         <td className="numeric">{formatCurrency(invoice.amount)}</td>
-                        <td className="numeric">{formatDate(Props.date(invoice))}</td>
+                        <td className="numeric numeric-date">{formatDate(Props.date(invoice))}</td>
                     </tr>
                 })}
             </tbody>
