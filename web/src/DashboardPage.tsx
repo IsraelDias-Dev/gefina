@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import type { Dashboard } from './dashboardType.ts';
 
 import SummaryCard from './SummaryCard.tsx';
-import InvoicesummaryTable from './InvoiceSumeryTable.tsx';
+import InvoiceSummaryTable from './InvoiceSumeryTable.tsx';
 
 import { formatCurrency } from './utils.ts';
 
@@ -40,18 +40,29 @@ export default function DashboardPage() {
     return <>
         <h1>Painel Inicial</h1>
 
-        <div>
+        <div className='summary-cards'>
             <SummaryCard label='Total recebido:' value={formatCurrency(dashboard.totals.paid)} />
             <SummaryCard label='Total pendente:' value={formatCurrency(dashboard.totals.pending)} />
             <SummaryCard label='Faturas:' value={String(dashboard.totals.invoiceCount)} />
             <SummaryCard label='Clientes:' value={String(dashboard.totals.customerCount)} />
         </div>
+        <div className='summary-tables'>
 
-        <InvoicesummaryTable
-            title='Faturas recentes'
-            dateLabel='Emissão'
-            invoices={dashboard.recentInvoices}
-            date={(invoice) => invoice.issueDate}
-        />
+            <InvoiceSummaryTable
+                title='Faturas recentes'
+                dateLabel='Emissão'
+                invoices={dashboard.recentInvoices}
+                date={(invoice) => invoice.issueDate}
+            /> 
+            
+            <InvoiceSummaryTable
+                title='Faturas atrasadas'
+                dateLabel='Vencimento'
+                invoices={dashboard.overdueInvoices}
+                date={(invoice) => invoice.dueDate}
+            />
+        </div>
+
+
     </>;
 }
