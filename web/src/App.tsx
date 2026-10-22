@@ -2,7 +2,7 @@ import {
   BrowserRouter,
   Routes,
   Route,
-  Link
+  NavLink
 } from 'react-router';
 
 import DashboardPage from "./DashboardPage.tsx";
@@ -15,20 +15,20 @@ export default function App() {
       <nav className=' menu'>
         <ul>
           <li>
-            <Link to='/'>Painel Inicial</Link>
+            <NavLink to='/'>Painel Inicial</NavLink>
           </li>
           <li>
-            <Link to='/Faturas'>Faturas</Link>
+            <NavLink to='/Faturas'>Faturas</NavLink>
           </li>
         </ul>
       </nav>
     </aside>
- 
- <main className='content'>
-    <Routes>
-      <Route path='/' element={<DashboardPage />} />
-      <Route path='/faturas' element={<InvoicePage />} />
-    </Routes>
- </main>
+
+    <main className='content'>
+      <Routes>
+        <Route path='/' element={<DashboardPage />} />
+        <Route path='/faturas' element={<InvoicePage />} />
+      </Routes>
+    </main>
   </BrowserRouter>
 }
