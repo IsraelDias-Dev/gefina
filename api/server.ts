@@ -5,11 +5,10 @@ import path from 'node:path';
 import pool from './database.ts';
 
 import dashboard from './dashboard.route.ts';
-
 import invoices from './invoice.route.ts';
 
-
 const app = express();
+app.use(express.json());
 
 const dist = path.join(import.meta.dirname, '..', 'web', 'dist');
 
@@ -18,7 +17,7 @@ app.use((request, _response, next) => {
   next();
 });
 
-app.get('/api.health', async (_request, response) => {
+app.get('/api/health', async (_request, response) => {
 const connect = await pool.query('SELECT datname FROM pg_database WHERE oid = 5;');
  try{ response.status(200).json({
      status: 'Server is running.',
