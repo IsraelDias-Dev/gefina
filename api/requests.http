@@ -6,13 +6,18 @@ GET {{host}}/api/health
 ### Buscar métricas
 GET {{host}}/api/dashboard
 
+### Buscar clientes
+GET {{host}}/api/customers/options
+
 ### Buscar faturas
 GET {{host}}/api/invoices
 
 ### Buscar fatura pelo identificador
 GET {{host}}/api/invoices/1
+
 ### Buscar fatura pelo identificador indisponivel
 GET {{host}}/api/invoices/99999
+
 ### Buscar fatura pelo identificador inválidado
 GET {{host}}/api/invoices/abc
 
