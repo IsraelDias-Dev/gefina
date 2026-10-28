@@ -1,6 +1,7 @@
 import express from 'express';
 
 import path from 'node:path';
+import fs from 'node:fs';
 
 import pool from './database.ts';
 
@@ -19,38 +20,41 @@ app.use((request, _response, next) => {
 });
 
 app.get('/api/health', async (_request, response) => {
-const connect = await pool.query('SELECT datname FROM pg_database WHERE oid = 5;');
- try{ response.status(200).json({
-     status: 'Server is running.',
-    database: connect.rows[0].datname
-  });
-} catch (error) {
-  console.error(error);
+  const connect = await pool.query('SELECT datname FROM pg_database WHERE oid = 5;');
+  try {
+    response.status(200).json({
+      status: 'Server is running.',
+      database: connect.rows[0].datname
+    });
+  } catch (error) {
+    console.error(error);
 
-  response.status(500).json({
-    status: 'Server is running.',
-    database: 'unvaliable'
-  });
-}
+    response.status(500).json({
+      status: 'Server is running.',
+      database: 'unvaliable'
+    });
+  }
 });
 
-app.use('/api/dashboard',dashboard);
+app.use('/api/dashboard', dashboard);
 app.use('/api/invoices', invoices);
 
 app.use(express.static(dist));
 
 app.use((request, response, next) => {
-  if (request.url.startsWith('/api')){
+  if (request.url.startsWith('/api') || !fs.existsSync(path.join(dist, 'index.html'))) {
     next();
     return;
   }
   response.sendFile(path.join(dist, 'index.html'));
-})
-
-app.use((_request, response) => {
-  response.status(404).json({ menssge: 'recurso não encontrado.' });
 });
 
+app.use((_request, response) => {
+  response.status(404).json({ error:{
+    status:400,
+    message : 'recurso não encontrado'
+  }});
+});
 app.use(handleError);
 
 app.listen(process.env.PORT || 3000);
