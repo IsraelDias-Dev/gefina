@@ -1,19 +1,33 @@
-import { useEffect, useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 
 import type { Invoice, InvoiceInput } from './invoiceType.ts';
 import InvoiceTable from './InvoiceTable.tsx';
 import InvoiceForm from './InvoiceForm.tsx';
 
 import { getAllInvoices, createInvoice } from './invoiceApi.ts'
-import type { CustomerOptions } from './customerType.ts';
+import type { CustomerOption } from './customerType.ts';
 
 export default function InvoicePage() {
     const [invoices, setInvoices] = useState<Invoice[]>([]);
-    const [customersOptions, setcustomerOptions] = useState<CustomerOptions[]>([]);
+    const [customersOptions, setcustomersOptions] = useState<CustomerOption[]>([]);
     const [error, setError] = useState<string | null>(null);
     const [busy, setBusy] = useState(false);
     const [formError, setFormError] = useState<string | null>(null);
     const [loading, setLoading] = useState(true);
+    const [dialogContent, setDialogContent] = useState(false);
+
+    const dialogRef = useRef<HTMLDialogElement>(null);
+
+    function openModal() {
+        setFormError(null);
+        setDialogContent(true);
+
+        dialogRef.current?.showModal();
+    }
+
+    function closeModal() {
+        dialogRef.current?.close();
+    }
 
     useEffect(() => {
         async function getInvoices() {
@@ -24,7 +38,7 @@ export default function InvoicePage() {
                 if (error instanceof Error) setError(error.message);
             }
 
-            setLoading(false)
+            setLoading(false);
         }
 
         getInvoices();
@@ -39,11 +53,12 @@ export default function InvoicePage() {
 
                 const datas = await response.json();
 
-                setcustomerOptions(datas);
+                setcustomersOptions(datas);
             } catch (error) {
                 if (error instanceof Error) setError(error.message);
             }
         }
+
         getCustomersOptions();
     }, []);
 
@@ -62,32 +77,43 @@ export default function InvoicePage() {
 
         try {
             await createInvoice(datas);
+            closeModal();
             await refresh();
         } catch (error) {
             if (error instanceof Error) setFormError(error.message);
-
         }
-        setBusy(false);
 
+        setBusy(false);
     }
 
     if (loading) return <p>Carregando faturas...</p>
+
     if (error) return <p>{error}</p>;
 
     return <>
-        <h1>Faturas</h1>
-        <div>
+        <header className='page-header'>
+            <h1>Faturas</h1>
+            <button className='button-primary' onClick={openModal}>Nova fatura</button>
+        </header>
+
+        <div className='panel'>
             <InvoiceTable invoices={invoices} />
         </div>
 
-        <InvoiceForm
-            invoice={null}
-            customers={customersOptions}
-            error={formError}
-            onDelete={() => null}
-            onCancel={() => null}
-            onSubmit={submit}
-            busy={busy}
-        />
+        <dialog
+            className='invoice-modal'
+            ref={dialogRef}
+            onClose={() => setDialogContent(false)}
+        >
+            {dialogContent && <InvoiceForm
+                invoice={null}
+                customers={customersOptions}
+                error={formError}
+                onDelete={() => null}
+                onCancel={closeModal}
+                onSubmit={submit}
+                busy={busy}
+            />}
+        </dialog>
     </>
 }
