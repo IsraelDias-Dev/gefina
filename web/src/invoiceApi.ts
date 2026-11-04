@@ -27,7 +27,7 @@ export async function createInvoice(datas: InvoiceInput): Promise<void> {
 }
 
 export async function updateInvoice(id: number, datas: InvoiceInput): Promise<void> {
-    const response = await fetch(`/api/invoices${id}`, {
+    const response = await fetch(`/api/invoices/${id}`, {
         method: 'POST',
         headers: { 'content-type': 'application/json' },
         body: JSON.stringify(datas)
