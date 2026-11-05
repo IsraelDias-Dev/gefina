@@ -1,7 +1,7 @@
-import { connect } from 'node:http2';
 import pool from './database.ts';
 
-export type InvoiceStatus = 'pending' | 'paid';
+import type { InvoiceStatus, InvoiceInput } from './invoice.schema.ts';
+
 type InvoiceSituation = 'pending' | 'paid' | 'overdue';
 
 interface Customer {
@@ -30,14 +30,6 @@ interface InvoiceRow {
   customer_id: number;
   customer_name: string;
   customer_email: string;
-}
-
-interface InvoiceInput{
-  customerId: number;
-  amount: number;
-  status: InvoiceStatus;
-  issueDate: string;
-  dueDate: string;
 }
 
 function toInvoice(row: InvoiceRow): Invoice {
