@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 
-import type { Invoice, InvoiceInput } from './invoiceType.ts';
+import type { Invoice, invoiceFieldErrors, InvoiceInput } from './invoiceType.ts';
 import InvoiceTable from './InvoiceTable.tsx';
 import InvoiceForm from './InvoiceForm.tsx';
 
@@ -11,6 +11,7 @@ export default function InvoicePage() {
     const [invoices, setInvoices] = useState<Invoice[]>([]);
     const [customersOptions, setcustomersOptions] = useState<CustomerOption[]>([]);
     const [error, setError] = useState<string | null>(null);
+    const[fieldErrors, setFieldErrors] = useState<invoiceFieldErrors>({});
     const [busy, setBusy] = useState(false);
     const [formError, setFormError] = useState<string | null>(null);
     const [loading, setLoading] = useState(true);
@@ -80,7 +81,9 @@ export default function InvoicePage() {
 
         try {
             if (!target) {
-                await createInvoice(datas);
+              const failure = await createInvoice(datas);
+
+              if (failure) return setFieldErrors(failure.fields);
             } else {
                 await updateInvoice(target.id, datas);
             }
@@ -88,9 +91,9 @@ export default function InvoicePage() {
             await refresh();
         } catch (error) {
             if (error instanceof Error) setFormError(error.message);
-        }
-
+        }finally{
         setBusy(false);
+        }
     }
 
     async function confirm() {
@@ -139,12 +142,14 @@ export default function InvoicePage() {
             onClose={() => {
                 setDialogContent(false);
                 setConfirmDelete(false);
+                setFieldErrors({}); 
             }}
         >
             {dialogContent && <InvoiceForm
                 invoice={target}
                 customers={customersOptions}
                 error={formError}
+                fieldErrors={fieldErrors}
                 onDelete={() => setConfirmDelete(true)}
                 confirmDelete={confirmDelete}
                 setConfirmDelete={setConfirmDelete}
