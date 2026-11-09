@@ -3,13 +3,15 @@
   "version": "0.2.0",
   "description": "Sistema de gestão de contas a receber",
   "author": "Israel Dias",
-
   "scripts": {
     "check": "biome check ./",
     "fix": "biome check --write ./",
     "fix:unsafe": "biome check --write --unsafe ./ "
   },
   "devDependencies": {
-    "@biomejs/biome": "2.5.15"
+    "@biomejs/biome": "2.5.15",
+    "@types/supertest": "^7.2.1",
+    "supertest": "^7.3.1",
+    "vitest": "^4.1.12"
   }
 }
