@@ -81,6 +81,7 @@ router.put('/:id', async (request, response) => {
     });
     return;
   }
+  
   const invoice = await modifyInvoice(
     id,
     request.body
