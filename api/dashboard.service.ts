@@ -1,34 +1,33 @@
-import prisma from './prisma.ts';
+import type { InvoiceStatus } from './invoice.schema.ts';
 
 import {
-  type Invoice,
+  findOverdueInvoices,
   findRecentInvoice,
-  findOverdueInvoices
-}
-  from './invoice.service.ts';
-
-import type { InvoiceStatus } from './invoice.schema.ts';
+  type Invoice,
+} from './invoice.service.ts';
+import prisma from './prisma.ts';
 
 interface Dashboard {
   totals: {
-    paid: Number;
-    pending: Number;
-    invoiceCount: Number;
-    customerCount: Number;
+    paid: number;
+    pending: number;
+    invoiceCount: number;
+    customerCount: number;
   };
   recentInvoices: Invoice[];
   overdueInvoices: Invoice[];
 }
 
-async function sumAmountByStatus(status: InvoiceStatus): Promise<number> {
+async function sumAmountByStatus(
+  status: InvoiceStatus,
+): Promise<number> {
   const sum = await prisma.invoice.aggregate({
-    where : { status },
-    _sum : { amount: true }
-  }); 
+    where: { status },
+    _sum: { amount: true },
+  });
 
- return !sum._sum.amount ? 0 : sum._sum.amount
+  return !sum._sum.amount ? 0 : sum._sum.amount;
 }
-
 
 export default async function findDashboard(): Promise<Dashboard> {
   const paid = await sumAmountByStatus('paid');
@@ -44,9 +43,8 @@ export default async function findDashboard(): Promise<Dashboard> {
       pending,
       invoiceCount,
       customerCount,
-
     },
     recentInvoices,
-    overdueInvoices
-  }
+    overdueInvoices,
+  };
 }

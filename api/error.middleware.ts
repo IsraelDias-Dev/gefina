@@ -1,12 +1,19 @@
- import type { ErrorRequestHandler } from "express"
- 
- const handleError: ErrorRequestHandler = ( error, _request, response, _next) => {
-    console.error(error);
+import type { ErrorRequestHandler } from 'express';
 
-    response.status(500).json({error:{
-        status:500,
-        message:'Não foi possivel concluir operação.'
-    }});
- }; 
+const handleError: ErrorRequestHandler = (
+  error,
+  _request,
+  response,
+  _next,
+) => {
+  console.error(error);
 
- export default handleError;
+  response.status(500).json({
+    error: {
+      status: 500,
+      message: 'Não foi possivel concluir operação.',
+    },
+  });
+};
+
+export default handleError;

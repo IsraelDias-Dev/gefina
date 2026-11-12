@@ -1,15 +1,13 @@
-import express from 'express';
-
-import path from 'node:path';
 import fs from 'node:fs';
 
-import prisma from './prisma.ts';
+import path from 'node:path';
+import express from 'express';
+import customers from './customer.route.ts';
 
 import dashboard from './dashboard.route.ts';
-import customers from './customer.route.ts';
-import invoices from './invoice.route.ts';
-
 import handleError from './error.middleware.ts';
+import invoices from './invoice.route.ts';
+import prisma from './prisma.ts';
 
 const app = express();
 
@@ -28,26 +26,29 @@ app.get('/api/health', async (_request, response) => {
 
     response.status(200).json({
       status: 'Server is running.',
-      database: 'Database available'
+      database: 'Database available',
     });
   } catch (error) {
     console.error(error);
 
     response.status(500).json({
       status: 'Server is running.',
-      database: 'Database unvailable'
+      database: 'Database unvailable',
     });
   }
 });
 
 app.use('/api/dashboard', dashboard);
 app.use('/api/invoices', invoices);
-app.use('/api/customers',customers);
+app.use('/api/customers', customers);
 
 app.use(express.static(dist));
 
 app.use((request, response, next) => {
-  if (request.url.startsWith('/api') || !fs.existsSync(path.join(dist, 'index.html'))) {
+  if (
+    request.url.startsWith('/api') ||
+    !fs.existsSync(path.join(dist, 'index.html'))
+  ) {
     next();
     return;
   }
@@ -55,10 +56,12 @@ app.use((request, response, next) => {
 });
 
 app.use((_request, response) => {
-  response.status(404).json({ error:{
-    status:400,
-    message : 'recurso não encontrado'
-  }});
+  response.status(404).json({
+    error: {
+      status: 400,
+      message: 'recurso não encontrado',
+    },
+  });
 });
 app.use(handleError);
 

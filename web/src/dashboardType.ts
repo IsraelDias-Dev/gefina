@@ -1,4 +1,4 @@
-import type { Invoice } from './invoiceType.ts'
+import type { Invoice } from './invoiceType.ts';
 
 export interface DashboardTotals {
   paid: number;
@@ -11,4 +11,3 @@ export interface Dashboard {
   recentInvoices: Invoice[];
   overdueInvoices: Invoice[];
 }
-
