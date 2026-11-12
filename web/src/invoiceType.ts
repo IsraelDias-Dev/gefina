@@ -16,7 +16,7 @@ export interface Invoice {
   dueDate: string;
   customer: Customer;
 }
-export interface InvoiceInput{
+export interface InvoiceInput {
   customerId: number;
   amount: number;
   status: InvoiceStatus;

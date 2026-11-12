@@ -1,59 +1,50 @@
-import pool from './database.ts';
-
-import  { 
-    type Invoice,
-    findRecentInvoice,
-    findOverdueInvoices }
-      from './invoice.service.ts';
-
 import type { InvoiceStatus } from './invoice.schema.ts';
 
-async function sumAmountByStatus(status: InvoiceStatus): Promise<number> {
-  const connect = await pool.query(
-    `SELECT COALESCE(SUM(amount), 0)::int AS total FROM invoices WHERE status = $1;`,
-    [status]
-  );
+import {
+  findOverdueInvoices,
+  findRecentInvoice,
+  type Invoice,
+} from './invoice.service.ts';
+import prisma from './prisma.ts';
 
-  return connect.rows[0].total
-}
-
-type Resource = 'invoices' | 'customers';
-
-async function count(resource: Resource): Promise<number>{
-  const connect = await pool.query(`SELECT COUNT(*)::int AS total FROM ${resource};`);   
-
-  return connect.rows[0]. total;
-  
-}
-interface DashboardTotals{
-    paid: Number;
-  pending: Number;
-  invoiceCount: Number;
-  customerCount: Number;
-}
 interface Dashboard {
-    totals: DashboardTotals;
-    recentInvoices: Invoice[];
-    overdueInvoices: Invoice[];
+  totals: {
+    paid: number;
+    pending: number;
+    invoiceCount: number;
+    customerCount: number;
+  };
+  recentInvoices: Invoice[];
+  overdueInvoices: Invoice[];
+}
+
+async function sumAmountByStatus(
+  status: InvoiceStatus,
+): Promise<number> {
+  const sum = await prisma.invoice.aggregate({
+    where: { status },
+    _sum: { amount: true },
+  });
+
+  return !sum._sum.amount ? 0 : sum._sum.amount;
 }
 
 export default async function findDashboard(): Promise<Dashboard> {
-   const paid = await sumAmountByStatus('paid');
-   const pending = await sumAmountByStatus('pending');
-   const invoiceCount = await count ('invoices');
-   const customerCount = await count ('customers');
-   const recentInvoices = await findRecentInvoice();
-   const overdueInvoices = await findOverdueInvoices();
+  const paid = await sumAmountByStatus('paid');
+  const pending = await sumAmountByStatus('pending');
+  const invoiceCount = await prisma.invoice.count();
+  const customerCount = await prisma.customer.count();
+  const recentInvoices = await findRecentInvoice();
+  const overdueInvoices = await findOverdueInvoices();
 
-   return{
-    totals:{
-       paid,
-       pending,
-       invoiceCount,
-       customerCount,
-    
+  return {
+    totals: {
+      paid,
+      pending,
+      invoiceCount,
+      customerCount,
     },
     recentInvoices,
-    overdueInvoices
-   }
+    overdueInvoices,
+  };
 }

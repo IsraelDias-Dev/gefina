@@ -1,56 +1,63 @@
-import type { 
-    Invoice,
-    InvoiceInput, 
-    apiFailure 
-} from "./invoiceType.ts";
+import type {
+  apiFailure,
+  Invoice,
+  InvoiceInput,
+} from './invoiceType.ts';
 
 export async function getAllInvoices(): Promise<Invoice[]> {
-    const response = await fetch('/api/invoices')
+  const response = await fetch('/api/invoices');
 
-    if (!response.ok) throw new Error('Falha ao buscar faturas ');
+  if (!response.ok) throw new Error('Falha ao buscar faturas ');
 
-    return response.json();
+  return response.json();
 }
 
 export async function getInvoiceById(id: number): Promise<Invoice> {
-    const response = await fetch(`/api/invoices/${id}`);
+  const response = await fetch(`/api/invoices/${id}`);
 
-    if (!response.ok) throw new Error('Falha ao buscar faturas ');
+  if (!response.ok) throw new Error('Falha ao buscar faturas ');
 
-    return response.json();
+  return response.json();
 }
 
-export async function createInvoice(datas: InvoiceInput): Promise<apiFailure | void> {
-    const response = await fetch('/api/invoices', {
-        method: 'POST',
-        headers: { 'content-type': 'application/json' },
-        body: JSON.stringify(datas)
-    });
+export async function createInvoice(
+  datas: InvoiceInput,
+): Promise<apiFailure | undefined> {
+  const response = await fetch('/api/invoices', {
+    method: 'POST',
+    headers: { 'content-type': 'application/json' },
+    body: JSON.stringify(datas),
+  });
 
-if (response.status === 400) {
+  if (response.status === 400) {
     const body = await response.json();
 
     return {
-        message: body.error.message,
-        fields: body.error.fields
+      message: body.error.message,
+      fields: body.error.fields,
     };
+  }
+
+  if (!response.ok) throw new Error('Falha ao criar fatura.');
 }
 
-    if (!response.ok) throw new Error('Falha ao criar fatura.');
+export async function updateInvoice(
+  id: number,
+  datas: InvoiceInput,
+): Promise<void> {
+  const response = await fetch(`/api/invoices/${id}`, {
+    method: 'POST',
+    headers: { 'content-type': 'application/json' },
+    body: JSON.stringify(datas),
+  });
+
+  if (!response.ok) throw new Error('Falha ao editar fatura.');
 }
 
-export async function updateInvoice(id: number, datas: InvoiceInput): Promise<void> {
-    const response = await fetch(`/api/invoices/${id}`, {
-        method: 'POST',
-        headers: { 'content-type': 'application/json' },
-        body: JSON.stringify(datas)
-    });
+export async function deleteInvoice(id: number): Promise<void> {
+  const response = await fetch(`/api/invoices/${id}`, {
+    method: 'DELETE',
+  });
 
-    if (!response.ok) throw new Error('Falha ao editar fatura.');
-}
-
-export async function deleteInvoice(id:number ): Promise<void> {
-    const response = await fetch(`/api/invoices/${id}`, {method: 'DELETE'});
-
-    if(!response.ok) throw new Error('Falha ao esxluir fatura.');
+  if (!response.ok) throw new Error('Falha ao esxluir fatura.');
 }
