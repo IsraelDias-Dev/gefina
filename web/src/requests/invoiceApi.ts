@@ -2,7 +2,7 @@ import type {
   apiFailure,
   Invoice,
   InvoiceInput,
-} from './invoiceType.ts';
+} from '../types/invoiceType.ts';
 
 export async function getAllInvoices(): Promise<Invoice[]> {
   const response = await fetch('/api/invoices');
