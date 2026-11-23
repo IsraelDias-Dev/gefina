@@ -38,7 +38,7 @@ export async function createInvoice(
     };
   }
 
- if (!response.ok) throw new Error('Falha ao criar fatura.');
+  if (!response.ok) throw new Error('Falha ao criar fatura.');
 }
 
 export async function updateInvoice(

@@ -32,13 +32,15 @@ export default function DashboardPage() {
     getDashboard();
   }, []);
 
-  if (loading) return <p className='text-sm text-text-muted'>Carregando...</p>;
+  if (loading)
+    return <p className="text-sm text-text-muted">Carregando...</p>;
 
-  if (error || dashboard === null) return <p className='text-overdue'>{error}</p>;
+  if (error || dashboard === null)
+    return <p className="text-overdue">{error}</p>;
 
   return (
     <>
-      <h1 className='text-xl font-semibold mb-7'>Painel Inicial</h1>
+      <h1 className="text-xl font-semibold mb-7">Painel Inicial</h1>
 
       <div className="flex gap-4">
         <SummaryCard
@@ -74,7 +76,9 @@ export default function DashboardPage() {
         />
       </div>
 
-      <small className='fixed bottom-0 left-[calc(50%+120px)] -translate-x-1/2'>&copy; 2026.Gefina - Gestor financeiro simples e eficiente.</small>
+      <small className="fixed bottom-0 left-[calc(50%+120px)] -translate-x-1/2">
+        &copy; 2026.Gefina - Gestor financeiro simples e eficiente.
+      </small>
     </>
   );
 }

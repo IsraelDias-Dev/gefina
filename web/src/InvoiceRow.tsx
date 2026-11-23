@@ -13,7 +13,7 @@ interface InvoiceRowProps {
 
 export default function InvoiceRow(props: InvoiceRowProps) {
   const base = 'p-3 border-b border-border';
-   
+
   return (
     <tr>
       <td className={base}>{props.invoice.customer.name};</td>
@@ -26,7 +26,9 @@ export default function InvoiceRow(props: InvoiceRowProps) {
       <td className={`${base} text-center tabular-nums`}>
         {formatDate(props.invoice.dueDate)}
       </td>
-      <td className={`${base} text-center ${situationClass(props.invoice.situation)}`}>
+      <td
+        className={`${base} text-center ${situationClass(props.invoice.situation)}`}
+      >
         {situationLabel(props.invoice.situation)}
       </td>
       <td className={`${base} text-center px-0`}>

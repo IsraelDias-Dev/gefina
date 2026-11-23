@@ -5,7 +5,8 @@ import InvoicePage from './InvoicePage.tsx';
 
 export default function App() {
   function apply(state: boolean): string {
-    const base = 'block px-3 py-2 rounded-control focus-visible:outline-2 focus-visible:outline-primary';
+    const base =
+      'block px-3 py-2 rounded-control focus-visible:outline-2 focus-visible:outline-primary';
 
     if (state) return `${base} bg-surface-raised font-medium`;
 
@@ -14,22 +15,26 @@ export default function App() {
   return (
     <BrowserRouter>
       <aside className="fixed w-60 h-full flex flex-col gap-8 p-6 border border-border bg-surface">
-        <header className="text-xl font-bold uppercase text-center">Gefina</header>
+        <header className="text-xl font-bold uppercase text-center">
+          Gefina
+        </header>
         <nav className=" menu">
-          <ul className='flex flex-col gap-1'>
+          <ul className="flex flex-col gap-1">
             <li>
               <NavLink
-               className={({ isActive }) => apply(isActive)} 
-               to='/'>
+                className={({ isActive }) => apply(isActive)}
+                to="/"
+              >
                 Painel Inicial
-                </NavLink>
+              </NavLink>
             </li>
             <li>
-              <NavLink 
-              className={({ isActive }) => apply(isActive)} 
-              to="/Faturas">
+              <NavLink
+                className={({ isActive }) => apply(isActive)}
+                to="/Faturas"
+              >
                 Faturas
-                </NavLink>
+              </NavLink>
             </li>
           </ul>
         </nav>
