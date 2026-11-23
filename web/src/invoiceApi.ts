@@ -38,7 +38,7 @@ export async function createInvoice(
     };
   }
 
- if (!response.ok) throw new Error('Falha ao criar fatura.');
+  if (!response.ok) throw new Error('Falha ao criar fatura.');
 }
 
 export async function updateInvoice(
@@ -46,7 +46,7 @@ export async function updateInvoice(
   datas: InvoiceInput,
 ): Promise<void> {
   const response = await fetch(`/api/invoices/${id}`, {
-    method: 'POST',
+    method: 'PUT',
     headers: { 'content-type': 'application/json' },
     body: JSON.stringify(datas),
   });
