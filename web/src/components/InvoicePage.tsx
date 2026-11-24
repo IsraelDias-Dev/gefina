@@ -135,7 +135,7 @@ export default function InvoicePage() {
 
   return (
     <>
-      <header className="flex justify-between items-center mb-6 px-3">
+      <header className="flex justify-between items-center mb-6">
         <h1 className="text-xl font-semibold">Faturas</h1>
         <button
           className="bg-primary px-4 py-2 rounded-control cursor-pointer focus-visible:outline-2 focus-visible:outline-primary"
@@ -151,7 +151,7 @@ export default function InvoicePage() {
       </div>
 
       <dialog
-        className="m-auto w-xl p-6 bg-surface backdrop:bg-background-backdrop border border-border rounded-dialog text-text focus-visible:outline-2 focus-visible:outline-primary"
+        className="m-auto w-xl p-6  rounded-dialog bg-surface backdrop:bg-background-backdrop border border-border text-text focus-visible:outline-2 focus-visible:outline-primary"
         ref={dialogRef}
         onClose={() => {
           setDialogContent(false);
