@@ -16,7 +16,7 @@ export default function InvoiceRow(props: InvoiceRowProps) {
 
   return (
     <tr>
-      <td className={base}>{props.invoice.customer.name};</td>
+      <td className={base}>{props.invoice.customer.name}</td>
       <td className={`${base} tabular-nums`}>
         {formatCurrency(props.invoice.amount)}
       </td>
